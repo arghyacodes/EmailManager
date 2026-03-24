@@ -3,16 +3,18 @@
         <table id="tableLeft">
             <thead>
                 <tr>
-                    <th class="message">Date <button>⬇</button></th>
-                    <th class="message">Message Id <button>⬇</button></th>
-                    <th class="message">Message <button>⬇</button></th>
+                    <th class="message">Date <button (click)="sortData('date'); toggleBtn()">{{sortDir()}}</button></th>
+                    <th class="message">Message Id <button (click)="sortData('messageId'); toggleBtn()">{{sortDir()}}</button></th>
+                    <th class="message">Message <button (click)="sortData('message'); toggleBtn()">{{sortDir()}}</button></th>
                     <!-- <th class="message-details">Message Details</th> -->
                 </tr>
             </thead>
             <tbody>
-                @for (message of filteredMessages; track $index) {
+                @for (message of sortedMessages; track $index) {
                 <tr (click)="showMessageDetails(message.messageId)">
-                    <td class="message">{{message.date}}</td>
+                    <td class="message">
+                        {{ message.date | date:'yyyy-MM-dd HH:mm' }}
+                    </td>
                     <td class="message">{{message.messageId}}</td>
                     <td class="message">{{message.message}}</td>
                 </tr>
