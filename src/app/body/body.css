@@ -1,0 +1,86 @@
+/* Layout (66% / 34%) */
+.container {
+  display: flex;
+  width: 90vw;
+  gap: 10px;
+}
+
+#bodyLeft {
+  flex: 0 0 66%;
+}
+
+#bodyRight {
+  flex: 0 0 34%;
+}
+
+/* Tables full width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+
+
+
+/* Odd rows */
+#bodyLeft tbody tr:nth-child(odd) {
+  background: linear-gradient(to right, #f8f9fa, #eef2f7);
+}
+
+/* Even rows */
+#bodyLeft tbody tr:nth-child(even) {
+  background: linear-gradient(to right, #ffffff, #f4f6f9);
+}
+
+/* Hover effect */
+#bodyLeft tbody tr:hover {
+  background: linear-gradient(to right, #dbeafe, #f0f9ff);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+
+#bodyRight td.message-details {
+  background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2);
+  color: #004d40;
+  font-weight: 500;
+  padding: 14px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* Optional: make it look like a card */
+#bodyRight table {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+
+th {
+  background: linear-gradient(to right, #2c3e50, #4b6cb7);
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+
+
+th button {
+  margin-left: 6px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}

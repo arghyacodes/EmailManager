@@ -1,0 +1,6 @@
+Sender<select (change)="selectSender($event)">
+  <option value="">Select Sender</option>
+  @for(sender of senders; track $index) {
+    <option [value]="sender.id">{{sender.email}}</option>
+  }
+</select>

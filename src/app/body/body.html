@@ -1,0 +1,38 @@
+<div class="container responsive-box">
+    <div id="bodyLeft">
+        <table id="tableLeft">
+            <thead>
+                <tr>
+                    <th class="message">Date <button>⬇</button></th>
+                    <th class="message">Message Id <button>⬇</button></th>
+                    <th class="message">Message <button>⬇</button></th>
+                    <!-- <th class="message-details">Message Details</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                @for (message of filteredMessages; track $index) {
+                <tr (click)="showMessageDetails(message.messageId)">
+                    <td class="message">{{message.date}}</td>
+                    <td class="message">{{message.messageId}}</td>
+                    <td class="message">{{message.message}}</td>
+                </tr>
+                }
+                <!-- <td class="message-details">{{messageDetail}}</td> -->
+            </tbody>
+        </table>
+    </div>
+    <div id="bodyRight">
+        <table id="tableRight">
+            <thead>
+                <tr>
+                    <th class="message-details">Message Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="message-details">{{messageDetail}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
