@@ -1,9 +1,8 @@
 import { Component, Input, signal } from '@angular/core';
-// import { Senders } from '../senders';
 import { Messages } from '../messages';
 import { MessageDetails } from '../message-details';
 import { DatePipe } from '@angular/common';
-// import { Navigation } from '../navigation/navigation';
+
 
 @Component({
   selector: 'app-body',
@@ -43,8 +42,8 @@ export class Body {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   sortData(column: string) {
+    console.log(this.sortDirection);
     if (this.sortColumn === column) {
-      // toggle direction
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
 
     } else {
@@ -69,19 +68,19 @@ export class Body {
 
       if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      
       return 0;
     });
   }
 
-  
-  sortDir = signal('⬇');
-
+  //toggle button direction
+  sortDir:string = '⬇';
   toggleBtn(){
-    if(this.sortDir()==='⬇'){
-      this.sortDir.set('⬆');
+    if(this.sortDir==='⬇'){
+      this.sortDir='⬆';
     }
     else{
-      this.sortDir.set('⬇');
+      this.sortDir='⬇';
     }
   }
 }

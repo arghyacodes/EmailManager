@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Senders } from '../senders';
-import { Messages } from '../messages';
-import { Body } from '../body/body';
+
 
 @Component({
   selector: 'app-navigation',

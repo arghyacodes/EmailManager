@@ -3,10 +3,9 @@
         <table id="tableLeft">
             <thead>
                 <tr>
-                    <th class="message">Date <button (click)="sortData('date'); toggleBtn()">{{sortDir()}}</button></th>
-                    <th class="message">Message Id <button (click)="sortData('messageId'); toggleBtn()">{{sortDir()}}</button></th>
-                    <th class="message">Message <button (click)="sortData('message'); toggleBtn()">{{sortDir()}}</button></th>
-                    <!-- <th class="message-details">Message Details</th> -->
+                    <th class="message">Date <button (click)="sortData('date'); toggleBtn()">{{sortDir}}</button></th>
+                    <th class="message">Message Id <button (click)="sortData('messageId'); toggleBtn()">{{sortDir}}</button></th>
+                    <th class="message">Message <button (click)="sortData('message'); toggleBtn()">{{sortDir}}</button></th>
                 </tr>
             </thead>
             <tbody>
@@ -19,7 +18,6 @@
                     <td class="message">{{message.message}}</td>
                 </tr>
                 }
-                <!-- <td class="message-details">{{messageDetail}}</td> -->
             </tbody>
         </table>
     </div>

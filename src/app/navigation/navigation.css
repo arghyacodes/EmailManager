@@ -1,3 +1,34 @@
-#dropdownMenu{
-    margin: 6px;
+#dropdownMenu {
+  margin: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+
+  border: 2px solid blueviolet;
+  border-radius: 6px;
+
+  background: linear-gradient(to right, #ffffff, #f1f5f9);
+  color: #333;
+
+  outline: none;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
 }
+
+/* Hover */
+#dropdownMenu:hover {
+  border-color: #4b6cb7;
+}
+
+/* Focus (when clicked) */
+#dropdownMenu:focus {
+  border-color: #4b6cb7;
+  box-shadow: 0 0 5px rgba(75, 108, 183, 0.5);
+}
+
+/* Optional: label styling */
+label, 
+select {
+  font-family: Arial, sans-serif;
+}
+
