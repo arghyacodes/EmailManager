@@ -3,34 +3,51 @@
         <table id="tableLeft">
             <thead>
                 <tr>
-                    <th class="message">Date <button (click)="sortData('date'); toggleBtn()">{{sortDir}}</button></th>
-                    <th class="message">Message Id <button (click)="sortData('messageId'); toggleBtn()">{{sortDir}}</button></th>
-                    <th class="message">Message <button (click)="sortData('message'); toggleBtn()">{{sortDir}}</button></th>
+                    <th>
+                        Date
+                        <button (click)="sortData('date')">
+                            {{ getArrow('date') }}
+                        </button>
+                    </th>
+
+                    <th>
+                        Message Id
+                        <button (click)="sortData('messageId')">
+                            {{ getArrow('messageId') }}
+                        </button>
+                    </th>
+
+                    <th>
+                        Message
+                        <button (click)="sortData('message')">
+                            {{ getArrow('message') }}
+                        </button>
+                    </th>
                 </tr>
             </thead>
+
             <tbody>
                 @for (message of sortedMessages; track $index) {
                 <tr (click)="showMessageDetails(message.messageId)">
-                    <td class="message">
-                        {{ message.date | date:'yyyy-MM-dd HH:mm' }}
-                    </td>
-                    <td class="message">{{message.messageId}}</td>
-                    <td class="message">{{message.message}}</td>
+                    <td>{{ message.date | date:'yyyy-MM-dd HH:mm' }}</td>
+                    <td>{{ message.messageId }}</td>
+                    <td>{{ message.message }}</td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
+
     <div id="bodyRight">
         <table id="tableRight">
             <thead>
                 <tr>
-                    <th class="message-details">Message Details</th>
+                    <th>Message Details</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="message-details">{{messageDetail}}</td>
+                    <td class="message-details">{{ messageDetail}}</td>
                 </tr>
             </tbody>
         </table>

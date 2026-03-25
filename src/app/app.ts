@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Body } from "./body/body";
 import { Navigation } from './navigation/navigation';
 
+
+
 @Component({
   selector: 'app-root',
   imports: [Navigation, Body],
@@ -9,7 +11,7 @@ import { Navigation } from './navigation/navigation';
   styleUrl: './app.css',
   standalone: true
 })
-export class App{
+export class App {
   selectedSenderId: number = 0;
 
   onSenderChange(senderId: number) {

@@ -1,7 +1,7 @@
-<label for="">Sender</label>
+Sender
 <select id="dropdownMenu" (change)="selectSender($event)">
-  <option value="">Select Sender</option>
+  <option value="">All Senders</option>
   @for(sender of senders; track $index) {
-    <option [value]="sender.id">{{sender.email}}</option>
+  <option [value]="sender.id">{{sender.email}}</option>
   }
 </select>

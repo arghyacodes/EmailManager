@@ -1,20 +1,66 @@
 {
-    "queues":[
-        {"id":1, "email":"user1@gmail.com"},
-        {"id":2, "email":"user2@gmail.com"}
-    ],
-    "messages":[
-        {"senderId":1, "date":"2026-03-18","messageId":1003,"message":"package delivered"},
-        {"senderId":1, "date":"2026-03-18","messageId":1002,"message":"package out for delivery"},
-        {"senderId":1, "date":"2026-03-17","messageId":1001,"message":"package shipped"},
-        {"senderId":1, "date":"2026-03-16","messageId":1000,"message":"order placed"},
-        {"senderId":2, "date":"2026-03-22","messageId":2000,"message":"order placed"}
-    ],
-    "messageDetails":[
-        {"messageId":1001, "details":"Package shipped to your nearest hub. We will let you know once out for delivery"},
-        {"messageId":1000, "details":"Order placed successfully. We will let you know once shipped"},
-        {"messageId":2000, "details":"Order placed successfully. We will let you know once shipped"},
-        {"messageId":1002, "details":"Arriving today : your package is out for delivery will reach you by 11pm"},
-        {"messageId":1003, "details":"Order delivered, you can download invoice from link below."}
-    ]
+  "senders": [
+    {
+      "id": 1,
+      "email": "user1@gmail.com"
+    },
+    {
+      "id": 2,
+      "email": "user2@gmail.com"
+    }
+  ],
+  "messages": [
+    {
+      "senderId": 1,
+      "date": "2026-03-18T10:30:00",
+      "messageId": 1003,
+      "message": "package delivered"
+    },
+    {
+      "senderId": 1,
+      "date": "2026-03-18T08:15:00",
+      "messageId": 1002,
+      "message": "out for delivery"
+    },
+    {
+      "senderId": 1,
+      "date": "2026-03-17T14:20:00",
+      "messageId": 1001,
+      "message": "package shipped"
+    },
+    {
+      "senderId": 1,
+      "date": "2026-03-16T09:00:00",
+      "messageId": 1000,
+      "message": "order placed"
+    },
+    {
+      "senderId": 2,
+      "date": "2026-03-22T11:45:00",
+      "messageId": 2000,
+      "message": "order placed"
+    }
+  ],
+  "messageDetails": [
+    {
+      "messageId": 1001,
+      "details": "Package shipped to your nearest hub. We will let you know once out for delivery"
+    },
+    {
+      "messageId": 1000,
+      "details": "Order placed successfully. We will let you know once shipped"
+    },
+    {
+      "messageId": 2000,
+      "details": "Order placed successfully. We will let you know once shipped"
+    },
+    {
+      "messageId": 1002,
+      "details": "Arriving today : your package is out for delivery will reach you by 11pm"
+    },
+    {
+      "messageId": 1003,
+      "details": "Order delivered, you can download invoice from link below."
+    }
+  ]
 }
