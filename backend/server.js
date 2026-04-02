@@ -36,7 +36,7 @@ async function initKafka() {
             const value = message.value.toString();
 
             const msgObj = {
-                id: message.offset,
+                id: `${topic}-${message.offset}`,   // UNIQUE ID
                 message: value,
                 time: new Date().toISOString(),
                 details: `${value}`,
@@ -48,7 +48,7 @@ async function initKafka() {
 }
 
 async function startServer() {
-    await initKafka();   // ✅ WAIT for Kafka setup
+    await initKafka();   // WAIT for Kafka setup
 
     app.listen(3000, () => {
         console.log("Server running on port 3000");

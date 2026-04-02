@@ -3,31 +3,8 @@ Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="d
     <option value="">--All Queues--</option>
     <option *ngFor="let t of topics" [value]="t">{{t}}</option>
 </select>
-<!--
-    <div class="container responsive-box">
-        <table>
-            <tr>
-                <th>Time</th>
-                <th>ID</th>
-                <th>Message</th>
-            </tr>
-            
-            <tr *ngFor="let m of messages" (click)="onMessageClick(m)">
-                <td>{{m.time}}</td>
-                <td>{{m.id}}</td>
-                <td>{{m.message}}</td>
-            </tr>
-        </table>
-        
-<div *ngIf="selectedMessage">
-    <h3>Message Details</h3>
-    <p>{{selectedMessage.details}}</p>
-</div>
 
-</div>
--->
-
-<!-- Old Code below for reference -->
+<!-- Body -->
 
 <div class="container responsive-box">
     <div id="bodyLeft">
@@ -41,8 +18,9 @@ Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="d
             </thead>
 
             <tbody>
-                <tr *ngFor="let m of messages || []" (click)="onMessageClick(m)">
-                    <td>{{m.time | date:'yyyy-MM-dd HH:mm'}}</td>
+                <tr *ngFor="let m of (messages$ | async); trackBy: trackById" (click)="onMessageClick(m)"
+                    [class.active]="m.id === selectedMessage?.id">
+                    <td>{{m.time ? (m.time | date:'yyyy-MM-dd HH:mm') : ''}}</td>
                     <td>{{m.id}}</td>
                     <td>{{m.message}}</td>
                 </tr>
@@ -61,9 +39,7 @@ Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="d
                 <tr>
                     <td class="message-details">
                         <div *ngIf="selectedMessage">
-                            <!-- <p>Messages count: {{messages.length}}</p> -->
-                            <p>{{messages | json}}</p>
-                            <!-- <p>{{selectedMessage.details}}</p> -->
+                            <p>{{selectedMessage | json}}</p>
                         </div>
                     </td>
                 </tr>

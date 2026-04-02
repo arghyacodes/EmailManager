@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class MessageViewerComponent {
   topics: string[] = [];
   selectedTopic = '';
-  messages: any[] = [];
+  messages$!: Observable<any[]>;
   selectedMessage: any;
 
   constructor(private api: ApiService) { }
@@ -25,38 +25,28 @@ export class MessageViewerComponent {
       this.topics = [...res];
     });
 
-    // 🔥 Load ALL messages immediately
+    // Load ALL messages immediately
     this.loadAllMessages();
   }
 
   onTopicChange() {
     if (!this.selectedTopic) {
-      this.loadAllMessages();   // 👈 fallback to all
+      this.messages$ = this.api.getAllMessages();
     } else {
-      this.api.getMessages(this.selectedTopic)
-        .subscribe(res => {
-          this.messages = (res || []).map((m: any) => ({
-            ...m,
-            time: new Date(m.time)
-          }));
-        });
+      this.messages$ = this.api.getMessages(this.selectedTopic);
     }
 
     this.selectedMessage = null;
   }
 
   onMessageClick(msg: any) {
-    this.selectedMessage = { ...msg };   // ✅ instant update
+    this.selectedMessage = msg;   // directly assigned
   }
 
   loadAllMessages() {
-    this.api.getAllMessages().subscribe(res => {
-      console.log("Initial load:", res);
-
-      this.messages = (res || []).map((m: any) => ({
-        ...m,
-        time: new Date(m.time)
-      }));
-    });
+    this.messages$ = this.api.getAllMessages();
+  }
+  trackById(index: number, item: any) {
+    return item.id + (item.topic || '');
   }
 }
