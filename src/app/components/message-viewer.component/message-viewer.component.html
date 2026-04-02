@@ -1,8 +1,11 @@
 <!-- Dropdown -->
-Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="dropdownMenu">
+Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" class="dropdownMenu">
     <option value="">--All Queues--</option>
     <option *ngFor="let t of topics" [value]="t">{{t}}</option>
 </select>
+
+<input class="dropdownMenu" type="text" placeholder="Search message..." [(ngModel)]="searchText"
+    (input)="onSearchChange()" />
 
 <!-- Body -->
 
@@ -11,8 +14,8 @@ Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="d
         <table id="tableLeft">
             <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>ID</th>
+                    <th (click)="toggleSort('time')">Time ⬍</th>
+                    <th (click)="toggleSort('id')">ID ⬍</th>
                     <th>Message</th>
                 </tr>
             </thead>
