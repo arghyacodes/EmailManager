@@ -1,0 +1,73 @@
+<!-- Dropdown -->
+Queue<select [(ngModel)]="selectedTopic" (ngModelChange)="onTopicChange()" id="dropdownMenu">
+    <option value="">--All Queues--</option>
+    <option *ngFor="let t of topics" [value]="t">{{t}}</option>
+</select>
+<!--
+    <div class="container responsive-box">
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>ID</th>
+                <th>Message</th>
+            </tr>
+            
+            <tr *ngFor="let m of messages" (click)="onMessageClick(m)">
+                <td>{{m.time}}</td>
+                <td>{{m.id}}</td>
+                <td>{{m.message}}</td>
+            </tr>
+        </table>
+        
+<div *ngIf="selectedMessage">
+    <h3>Message Details</h3>
+    <p>{{selectedMessage.details}}</p>
+</div>
+
+</div>
+-->
+
+<!-- Old Code below for reference -->
+
+<div class="container responsive-box">
+    <div id="bodyLeft">
+        <table id="tableLeft">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>ID</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let m of messages || []" (click)="onMessageClick(m)">
+                    <td>{{m.time | date:'yyyy-MM-dd HH:mm'}}</td>
+                    <td>{{m.id}}</td>
+                    <td>{{m.message}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="bodyRight">
+        <table id="tableRight">
+            <thead>
+                <tr>
+                    <th>Message Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="message-details">
+                        <div *ngIf="selectedMessage">
+                            <!-- <p>Messages count: {{messages.length}}</p> -->
+                            <p>{{messages | json}}</p>
+                            <!-- <p>{{selectedMessage.details}}</p> -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

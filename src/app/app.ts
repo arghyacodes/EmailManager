@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Body } from "./body/body";
 import { Navigation } from './navigation/navigation';
+import { MessageViewerComponent } from './components/message-viewer.component/message-viewer.component';
 
 
 
 @Component({
   selector: 'app-root',
-  imports: [Navigation, Body],
+  imports: [MessageViewerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true
