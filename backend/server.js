@@ -19,16 +19,25 @@ let messagesStore = {};
 async function initKafka() {
     await consumer.connect();
 
-    const topics = ["queue1", "queue2"];
+    // connect admin
+    await admin.connect();
 
+    // get all topics
+    const topics = await admin.listTopics();
 
-    topics.forEach(topic => {
+    console.log("Topics from Kafka:", topics);
+
+    // filter internal topics
+    const validTopics = topics.filter(t => !t.startsWith("__"));
+
+    // initialize store
+    validTopics.forEach(topic => {
         messagesStore[topic] = [];
     });
 
-    for (let topic of topics) {
+    // subscribe dynamically
+    for (let topic of validTopics) {
         await consumer.subscribe({ topic, fromBeginning: true });
-        messagesStore[topic] = [];
     }
 
     await consumer.run({
@@ -36,16 +45,18 @@ async function initKafka() {
             const value = message.value.toString();
 
             const msgObj = {
-                id: `${topic}-${message.offset}`,   // UNIQUE ID
+                id: `${topic}-${message.offset}`,
                 message: value,
                 time: new Date().toISOString(),
-                details: `${value}`,
+                details: value,
             };
 
             messagesStore[topic].push(msgObj);
         },
     });
 }
+
+const admin = kafka.admin();
 
 async function startServer() {
     await initKafka();   // WAIT for Kafka setup
@@ -54,6 +65,7 @@ async function startServer() {
         console.log("Server running on port 3000");
     });
 }
+
 
 startServer();
 
@@ -72,14 +84,28 @@ app.get("/messages/:topic", (req, res) => {
 
 
 //  API 3: Get message details
-app.get("/message/:topic/:id", (req, res) => {
-    const { topic, id } = req.params;
+// app.get("/message/:topic/:id", (req, res) => {
+//     const { topic, id } = req.params;
 
-    const msg = (messagesStore[topic] || []).find(
-        (m) => m.id === id
-    );
+//     const msg = (messagesStore[topic] || []).find(
+//         (m) => m.id === id
+//     );
 
-    res.json(msg || {});
+//     res.json(msg || {});
+// });
+
+app.get("/messages", (req, res) => {
+    let allMessages = [];
+
+    Object.keys(messagesStore).forEach(topic => {
+        const msgs = messagesStore[topic].map(m => ({
+            ...m,
+            topic
+        }));
+        allMessages = [...allMessages, ...msgs];
+    });
+
+    res.json(allMessages);
 });
 
 app.get("/messages", (req, res) => {
@@ -96,20 +122,6 @@ app.get("/messages", (req, res) => {
     res.json(allMessages);
 });
 
-app.get("/messages", (req, res) => {
-    let allMessages = [];
-
-    Object.keys(messagesStore).forEach(topic => {
-        const msgs = messagesStore[topic].map(m => ({
-            ...m,
-            topic
-        }));
-        allMessages = [...allMessages, ...msgs];
-    });
-
-    res.json(allMessages);
-});
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
+// app.listen(3000, () => {
+//     console.log("Server running on port 3000");
+// });
