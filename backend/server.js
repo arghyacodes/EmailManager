@@ -13,29 +13,26 @@ const kafka = new Kafka({
 
 const consumer = kafka.consumer({ groupId: "group1" });
 
+const producer = kafka.producer();
+
 // { topic1: [ {id, message, time, details} ] }
 let messagesStore = {};
 
+const admin = kafka.admin();
+
 async function initKafka() {
     await consumer.connect();
-
-    // connect admin
+    await producer.connect();
     await admin.connect();
 
-    // get all topics
     const topics = await admin.listTopics();
 
-    console.log("Topics from Kafka:", topics);
-
-    // filter internal topics
     const validTopics = topics.filter(t => !t.startsWith("__"));
 
-    // initialize store
     validTopics.forEach(topic => {
         messagesStore[topic] = [];
     });
 
-    // subscribe dynamically
     for (let topic of validTopics) {
         await consumer.subscribe({ topic, fromBeginning: true });
     }
@@ -44,19 +41,16 @@ async function initKafka() {
         eachMessage: async ({ topic, message }) => {
             const value = message.value.toString();
 
-            const msgObj = {
+            messagesStore[topic].push({
                 id: `${topic}-${message.offset}`,
                 message: value,
                 time: new Date().toISOString(),
                 details: value,
-            };
-
-            messagesStore[topic].push(msgObj);
+            });
         },
     });
 }
 
-const admin = kafka.admin();
 
 async function startServer() {
     await initKafka();   // WAIT for Kafka setup
@@ -68,6 +62,53 @@ async function startServer() {
 
 
 startServer();
+
+async function getTopicFromKey(key) {
+    const topics = await admin.listTopics();
+    const validTopics = topics.filter(t => !t.startsWith("__"));
+
+    if (validTopics.includes(key)) {
+        return key;
+    }
+
+    // create topic
+    await admin.createTopics({
+        topics: [{
+            topic: key,
+            numPartitions: 1,
+            replicationFactor: 1
+        }]
+    });
+
+    console.log("🆕 New Created topic:", key);
+
+    // update backend state
+    messagesStore[key] = [];
+
+    // restart consumer safely
+    await consumer.stop();
+
+    await consumer.subscribe({ topic: key, fromBeginning: true });
+
+    await consumer.run({
+        eachMessage: async ({ topic, message }) => {
+            const value = message.value.toString();
+
+            if (!messagesStore[topic]) {
+                messagesStore[topic] = [];
+            }
+
+            messagesStore[topic].push({
+                id: `${topic}-${message.offset}`,
+                message: value,
+                time: new Date().toISOString(),
+                details: value,
+            });
+        },
+    });
+
+    return key;
+}
 
 
 //  API 1: Get all topics
@@ -84,14 +125,18 @@ app.get("/messages/:topic", (req, res) => {
 
 
 //  API 3: Get message details
-// app.get("/message/:topic/:id", (req, res) => {
-//     const { topic, id } = req.params;
+// app.get("/messages", (req, res) => {
+//     let allMessages = [];
 
-//     const msg = (messagesStore[topic] || []).find(
-//         (m) => m.id === id
-//     );
+//     Object.keys(messagesStore).forEach(topic => {
+//         const msgs = messagesStore[topic].map(m => ({
+//             ...m,
+//             topic
+//         }));
+//         allMessages = [...allMessages, ...msgs];
+//     });
 
-//     res.json(msg || {});
+//     res.json(allMessages);
 // });
 
 app.get("/messages", (req, res) => {
@@ -108,20 +153,24 @@ app.get("/messages", (req, res) => {
     res.json(allMessages);
 });
 
-app.get("/messages", (req, res) => {
-    let allMessages = [];
+app.post("/send", async (req, res) => {
+    const { key, message } = req.body;
 
-    Object.keys(messagesStore).forEach(topic => {
-        const msgs = messagesStore[topic].map(m => ({
-            ...m,
-            topic
-        }));
-        allMessages = [...allMessages, ...msgs];
-    });
+    try {
+        const topic = await getTopicFromKey(key);
 
-    res.json(allMessages);
+        await producer.send({
+            topic,
+            messages: [
+                {
+                    key,
+                    value: message,
+                },
+            ],
+        });
+
+        res.json({ status: "sent", topic });
+    } catch (err) {
+        res.status(500).send("Error sending message");
+    }
 });
-
-// app.listen(3000, () => {
-//     console.log("Server running on port 3000");
-// });
